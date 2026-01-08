@@ -1,6 +1,6 @@
 {
   "name": "StyloAI",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -42,7 +42,6 @@
     "typescript": "5.2.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=16"
   }
 }
-

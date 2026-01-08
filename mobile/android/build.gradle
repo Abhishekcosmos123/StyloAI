@@ -2,20 +2,53 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "34.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
+        compileSdkVersion = 34
+        targetSdkVersion = 34
 
-        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
+        // We use NDK 26.1 which has both M1 support and is the side-by-side NDK version from AGP.
+        ndkVersion = "26.1.10909125"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:7.4.2")
         classpath("com.facebook.react:react-native-gradle-plugin")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+    
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                if (android.defaultConfig) {
+                    defaultConfig {
+                        minSdkVersion rootProject.ext.minSdkVersion
+                    }
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_11
+                    targetCompatibility JavaVersion.VERSION_11
+                }
+            }
+        }
+        // Set Kotlin JVM target for Kotlin projects
+        project.tasks.matching { it.name.contains('compile') && it.name.contains('Kotlin') }.configureEach { task ->
+            if (task.hasProperty('kotlinOptions')) {
+                task.kotlinOptions {
+                    jvmTarget = '11'
+                }
+            }
+        }
     }
 }

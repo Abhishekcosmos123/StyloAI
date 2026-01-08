@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "334133625060",
+    "project_id": "styloai-144cb",
+    "storage_bucket": "styloai-144cb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334133625060:android:e24a200d37243ca9e3acf1",
+        "android_client_info": {
+          "package_name": "com.styloaimobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBay_wcC7Wud6LFlvmq6t1D8exGyL0Xm6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

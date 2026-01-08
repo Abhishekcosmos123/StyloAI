@@ -81,7 +81,8 @@ const AppNavigator = () => {
   }, [dispatch]);
 
   // Check if user needs onboarding
-  const needsOnboarding = isAuthenticated && user && (!user.gender || !profile?.gender);
+  // Onboarding is complete if profile has gender (set during onboarding screen)
+  const needsOnboarding = isAuthenticated && user && !profile?.gender;
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>

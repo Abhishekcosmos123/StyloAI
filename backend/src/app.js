@@ -7,13 +7,32 @@ const connectDB = require('./config/database');
 // Load environment variables
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database (non-blocking in development)
+connectDB().catch((err) => {
+  console.error('Database connection failed:', err.message);
+});
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Middleware - Add request logging for debugging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url} (${req.protocol})`);
+  // Only log headers if there's an error (to avoid spam)
+  if (req.url.includes('/auth/login')) {
+    console.log('Login request - Protocol:', req.protocol, 'Secure:', req.secure);
+  }
+  next();
+});
+
+// CORS configuration - explicitly allow HTTP origins
+app.use(cors({
+  origin: true, // Allow all origins in development
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,7 +53,13 @@ app.get('/api/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error occurred:', {
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+    protocol: req.protocol,
+  });
   res.status(err.status || 500).json({
     message: err.message || 'Internal server error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
@@ -46,11 +71,27 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
-  console.log(`StyloAI Backend server running on port ${PORT}`);
+// Explicitly listen on HTTP (not HTTPS)
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`StyloAI Backend server running on HTTP://localhost:${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Protocol: HTTP (not HTTPS)`);
 });
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('Server error:', error);
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Please use a different port.`);
+  }
+});
+
+// Ensure we're not using HTTPS
+if (process.env.HTTPS === 'true' || process.env.SSL_KEY) {
+  console.warn('WARNING: HTTPS/SSL configuration detected. This server should use HTTP only for development.');
+}
 
 module.exports = app;
 

@@ -4,6 +4,8 @@ import {useDispatch} from 'react-redux';
 import ImagePicker from '../../components/ImagePicker';
 import Button from '../../components/Button';
 import {analysisService} from '../../services/api/analysisService';
+import {getProfile} from '../../store/slices/profileSlice';
+import {checkAuth} from '../../store/slices/authSlice';
 import {colors} from '../../constants/colors';
 
 const BodyFaceUploadScreen = ({navigation}) => {
@@ -29,18 +31,15 @@ const BodyFaceUploadScreen = ({navigation}) => {
         await analysisService.uploadFaceImage(faceImage);
       }
 
-      Alert.alert('Success', 'Images uploaded successfully', [
-        {
-          text: 'OK',
-          onPress: () => {
-            // Navigation will be handled by AppNavigator based on auth state
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainTabs'}],
-            });
-          },
-        },
+      // Refresh both profile and auth state to update onboarding status
+      await Promise.all([
+        dispatch(getProfile()),
+        dispatch(checkAuth()),
       ]);
+      
+      // Show success message - navigation will happen automatically
+      // when AppNavigator detects needsOnboarding is false
+      Alert.alert('Success', 'Images uploaded successfully!');
     } catch (error) {
       Alert.alert('Error', error.message || 'Failed to upload images');
     } finally {

@@ -14,7 +14,7 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import {colors} from '../../constants/colors';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {user} = useSelector((state) => state.auth);
   const {profile} = useSelector((state) => state.profile);
@@ -91,28 +91,56 @@ const ProfileScreen = () => {
         {profile?.isPremium !== undefined && (
           <View style={styles.profileSection}>
             <Text style={styles.label}>Premium Status</Text>
-            <Text style={styles.value}>
-              {profile.isPremium ? 'Premium User' : 'Free User'}
-            </Text>
+            <View style={styles.premiumRow}>
+              <Text style={styles.value}>
+                {profile.isPremium ? 'Premium User' : 'Free User'}
+              </Text>
+              {!profile.isPremium && (
+                <TouchableOpacity
+                  style={styles.upgradeButton}
+                  onPress={() => navigation.navigate('Payment')}>
+                  <Text style={styles.upgradeText}>Upgrade</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         )}
       </Card>
 
       <Card style={styles.settingsCard}>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>Edit Profile</Text>
+        {!profile?.isPremium && (
+          <TouchableOpacity
+            style={[styles.settingItem, styles.premiumSettingItem]}
+            onPress={() => navigation.navigate('Payment')}>
+            <View style={styles.premiumSettingLeft}>
+              <Text style={styles.premiumSettingText}>Upgrade to Premium</Text>
+              <Text style={styles.premiumSettingSubtext}>Unlock all features</Text>
+            </View>
+            <Text style={styles.settingArrow}>›</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.settingText}>Settings</Text>
           <Text style={styles.settingArrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>Notifications</Text>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => navigation.navigate('StyleHistory')}>
+          <Text style={styles.settingText}>Style History</Text>
           <Text style={styles.settingArrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>Privacy</Text>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => navigation.navigate('GapDetection')}>
+          <Text style={styles.settingText}>Wardrobe Gaps</Text>
           <Text style={styles.settingArrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingText}>Help & Support</Text>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => navigation.navigate('Occasions')}>
+          <Text style={styles.settingText}>Occasions</Text>
           <Text style={styles.settingArrow}>›</Text>
         </TouchableOpacity>
       </Card>
@@ -195,6 +223,40 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginTop: 8,
+  },
+  premiumRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  upgradeButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  upgradeText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  premiumSettingItem: {
+    backgroundColor: colors.lightGray,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  premiumSettingLeft: {
+    flex: 1,
+  },
+  premiumSettingText: {
+    fontSize: 16,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  premiumSettingSubtext: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
   },
 });
 

@@ -45,6 +45,12 @@ app.use('/api/profile', require('./routes/profileRoutes'));
 app.use('/api/analysis', require('./routes/analysisRoutes'));
 app.use('/api/wardrobe', require('./routes/wardrobeRoutes'));
 app.use('/api/outfits', require('./routes/outfitRoutes'));
+app.use('/api/daily-outfit', require('./routes/dailyOutfitRoutes'));
+app.use('/api/planner', require('./routes/plannerRoutes'));
+app.use('/api/gaps', require('./routes/gapDetectionRoutes'));
+app.use('/api/style-history', require('./routes/styleHistoryRoutes'));
+app.use('/api/occasions', require('./routes/occasionRoutes'));
+app.use('/api/payment', require('./routes/paymentRoutes'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

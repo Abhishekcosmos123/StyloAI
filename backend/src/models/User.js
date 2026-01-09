@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    premiumActivatedAt: {
+      type: Date,
+    },
+    premiumExpiresAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

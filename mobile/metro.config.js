@@ -6,7 +6,17 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
  *
  * @type {import('metro-config').MetroConfig}
  */
-const config = {};
+const defaultConfig = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+const config = {
+  resolver: {
+    ...defaultConfig.resolver,
+    // Block debugger UI files that may cause resolution errors
+    blockList: Array.isArray(defaultConfig.resolver.blockList)
+      ? [...defaultConfig.resolver.blockList, /.*\/debugger-ui\/.*/]
+      : [/.*\/debugger-ui\/.*/],
+  },
+};
+
+module.exports = mergeConfig(defaultConfig, config);
 

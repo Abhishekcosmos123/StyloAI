@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {checkAuth} from '../store/slices/authSlice';
 
 // Auth Screens
@@ -21,6 +22,19 @@ import ProfileScreen from '../screens/profile/ProfileScreen';
 // Outfit Screens
 import OutfitGeneratorScreen from '../screens/home/OutfitGeneratorScreen';
 import OutfitHistoryScreen from '../screens/home/OutfitHistoryScreen';
+import TodaysOutfitScreen from '../screens/home/TodaysOutfitScreen';
+
+// Feature Screens
+import OccasionScreen from '../screens/occasions/OccasionScreen';
+import GapDetectionScreen from '../screens/gaps/GapDetectionScreen';
+import StyleHistoryScreen from '../screens/style/StyleHistoryScreen';
+
+// Settings Screens
+import SettingsScreen from '../screens/settings/SettingsScreen';
+import PrivacySettingsScreen from '../screens/settings/PrivacySettingsScreen';
+
+// Payment Screens
+import PaymentScreen from '../screens/payment/PaymentScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +50,9 @@ const MainTabs = () => {
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
           borderTopColor: '#E1E8ED',
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
         },
       }}>
       <Tab.Screen
@@ -43,6 +60,9 @@ const MainTabs = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="home" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
@@ -50,6 +70,9 @@ const MainTabs = () => {
         component={WardrobeScreen}
         options={{
           tabBarLabel: 'Wardrobe',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="shirt" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
@@ -57,6 +80,9 @@ const MainTabs = () => {
         component={PlannerScreen}
         options={{
           tabBarLabel: 'Planner',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="calendar" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
@@ -64,6 +90,9 @@ const MainTabs = () => {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person" size={size || 24} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -111,6 +140,41 @@ const AppNavigator = () => {
             name="OutfitHistory"
             component={OutfitHistoryScreen}
             options={{headerShown: true, title: 'Outfit History'}}
+          />
+          <Stack.Screen
+            name="TodaysOutfit"
+            component={TodaysOutfitScreen}
+            options={{headerShown: true, title: "What Should I Wear Today?"}}
+          />
+          <Stack.Screen
+            name="Occasions"
+            component={OccasionScreen}
+            options={{headerShown: true, title: 'Occasion Styling'}}
+          />
+          <Stack.Screen
+            name="GapDetection"
+            component={GapDetectionScreen}
+            options={{headerShown: true, title: 'Wardrobe Gaps'}}
+          />
+          <Stack.Screen
+            name="StyleHistory"
+            component={StyleHistoryScreen}
+            options={{headerShown: true, title: 'Style History'}}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{headerShown: true, title: 'Settings'}}
+          />
+          <Stack.Screen
+            name="PrivacySettings"
+            component={PrivacySettingsScreen}
+            options={{headerShown: true, title: 'Privacy Settings'}}
+          />
+          <Stack.Screen
+            name="Payment"
+            component={PaymentScreen}
+            options={{headerShown: true, title: 'Upgrade to Premium'}}
           />
         </>
       )}

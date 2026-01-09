@@ -138,3 +138,24 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+// Apply react-native-vector-icons
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
+// Ensure Kotlin modules are compiled before Java compilation
+afterEvaluate {
+    def compileJavaTask = tasks.findByName("compileDebugJavaWithJavac")
+    if (compileJavaTask) {
+        compileJavaTask.dependsOn(":react-native-screens:compileDebugKotlin")
+        compileJavaTask.dependsOn(":react-native-gesture-handler:compileDebugKotlin")
+        compileJavaTask.dependsOn(":react-native-safe-area-context:compileDebugKotlin")
+    }
+    
+    // Also ensure PackageList generation happens after Kotlin compilation
+    def generatePackageListTask = tasks.findByName("generatePackageList")
+    if (generatePackageListTask) {
+        generatePackageListTask.dependsOn(":react-native-screens:compileDebugKotlin")
+        generatePackageListTask.dependsOn(":react-native-gesture-handler:compileDebugKotlin")
+        generatePackageListTask.dependsOn(":react-native-safe-area-context:compileDebugKotlin")
+    }
+}

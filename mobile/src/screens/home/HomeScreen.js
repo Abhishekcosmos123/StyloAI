@@ -25,12 +25,25 @@ const HomeScreen = ({navigation}) => {
       </View>
 
       <Card style={styles.actionCard}>
+        <Text style={styles.actionTitle}>What Should I Wear Today?</Text>
+        <Text style={styles.actionDescription}>
+          Get your perfect outfit suggestion for today based on weather and your mood
+        </Text>
+        <Button
+          title="Get Today's Outfit"
+          onPress={() => navigation.navigate('TodaysOutfit')}
+          style={styles.primaryButton}
+        />
+      </Card>
+
+      <Card style={styles.actionCard}>
         <Text style={styles.actionTitle}>Generate New Outfit</Text>
         <Text style={styles.actionDescription}>
           Get AI-powered outfit suggestions based on your wardrobe and style preferences
         </Text>
         <Button
           title="Generate Outfit"
+          variant="secondary"
           onPress={() => navigation.navigate('OutfitGenerator')}
         />
       </Card>
@@ -93,8 +106,11 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   actionCard: {
-    marginBottom: 24,
+    marginBottom: 16,
     alignItems: 'center',
+  },
+  primaryButton: {
+    marginTop: 8,
   },
   actionTitle: {
     fontSize: 20,

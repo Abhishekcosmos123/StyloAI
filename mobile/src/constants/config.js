@@ -32,5 +32,29 @@ export const API_ENDPOINTS = {
     SAVE: '/outfits',
     DELETE: '/outfits',
   },
+  DAILY_OUTFIT: {
+    GENERATE: '/daily-outfit/generate',
+    TODAY: '/daily-outfit/today',
+    MARK_WORN: '/daily-outfit/mark-worn',
+  },
+  PLANNER: {
+    GENERATE: '/planner/generate',
+    WEEKLY: '/planner/weekly',
+    CONFIRM: '/planner/confirm',
+  },
+  GAPS: {
+    DETECT: '/gaps/detect',
+    GET: '/gaps',
+    RESOLVE: '/gaps/resolve',
+  },
+  STYLE_HISTORY: {
+    TRACK: '/style-history/track',
+    HISTORY: '/style-history/history',
+    PROGRESS: '/style-history/progress',
+  },
+  OCCASIONS: {
+    GENERATE: '/occasions/generate',
+    GUIDES: '/occasions/guides',
+  },
 };
 

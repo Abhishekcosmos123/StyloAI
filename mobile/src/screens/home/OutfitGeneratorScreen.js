@@ -40,7 +40,10 @@ const OutfitGeneratorScreen = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView 
+      style={styles.container} 
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}>
       <Card style={styles.selectorCard}>
         <Text style={styles.label}>Style Type</Text>
         <View style={styles.optionsContainer}>
@@ -51,7 +54,8 @@ const OutfitGeneratorScreen = ({navigation}) => {
                 styles.optionButton,
                 styleType === type && styles.selectedOption,
               ]}
-              onPress={() => setStyleType(type)}>
+              onPress={() => setStyleType(type)}
+              activeOpacity={0.7}>
               <Text
                 style={[
                   styles.optionText,
@@ -63,7 +67,7 @@ const OutfitGeneratorScreen = ({navigation}) => {
           ))}
         </View>
 
-        <Text style={[styles.label, {marginTop: 16}]}>Occasion (Optional)</Text>
+        <Text style={[styles.label, styles.sectionSpacing]}>Occasion (Optional)</Text>
         <View style={styles.optionsContainer}>
           {OCCASIONS.map((occ) => (
             <TouchableOpacity
@@ -72,7 +76,8 @@ const OutfitGeneratorScreen = ({navigation}) => {
                 styles.optionButton,
                 occasion === occ && styles.selectedOption,
               ]}
-              onPress={() => setOccasion(occasion === occ ? null : occ)}>
+              onPress={() => setOccasion(occasion === occ ? null : occ)}
+              activeOpacity={0.7}>
               <Text
                 style={[
                   styles.optionText,
@@ -174,54 +179,84 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    paddingBottom: 32,
   },
   selectorCard: {
     marginBottom: 16,
+    padding: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     color: colors.text,
-    marginBottom: 12,
+    marginBottom: 14,
+    letterSpacing: 0.3,
+  },
+  sectionSpacing: {
+    marginTop: 24,
   },
   optionsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    marginHorizontal: -6,
   },
   optionButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 10,
+    borderWidth: 1.5,
     borderColor: colors.border,
     backgroundColor: colors.surface,
+    margin: 6,
+    minWidth: 90,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   selectedOption: {
     backgroundColor: colors.accent,
     borderColor: colors.accent,
+    shadowColor: colors.accent,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   optionText: {
     fontSize: 14,
     color: colors.text,
+    fontWeight: '500',
   },
   selectedOptionText: {
     color: colors.white,
     fontWeight: '600',
   },
   generateButton: {
-    marginTop: 16,
+    marginTop: 24,
   },
   loadingCard: {
     alignItems: 'center',
-    padding: 32,
+    padding: 40,
+    marginTop: 16,
   },
   loadingText: {
     marginTop: 16,
     color: colors.textSecondary,
+    fontSize: 15,
   },
   outfitCard: {
     marginTop: 16,
+    padding: 20,
   },
   outfitHeader: {
     flexDirection: 'row',
@@ -251,19 +286,22 @@ const styles = StyleSheet.create({
   imagesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    marginHorizontal: -6,
   },
   outfitImage: {
     width: 100,
     height: 100,
-    borderRadius: 8,
+    borderRadius: 10,
     backgroundColor: colors.lightGray,
+    margin: 6,
+    resizeMode: 'cover',
   },
   singleImage: {
     width: '100%',
     height: 200,
-    borderRadius: 8,
+    borderRadius: 10,
     backgroundColor: colors.lightGray,
+    resizeMode: 'cover',
   },
   hairstyleText: {
     fontSize: 14,

@@ -20,7 +20,8 @@
     "cors": "^2.8.5",
     "cloudinary": "^1.40.0",
     "axios": "^1.6.2",
-    "@aws-sdk/client-rekognition": "^3.490.0"
+    "@aws-sdk/client-rekognition": "^3.490.0",
+    "googleapis": "^128.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

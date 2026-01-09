@@ -2,6 +2,7 @@ const DailyOutfit = require('../models/DailyOutfit');
 const Outfit = require('../models/Outfit');
 const { generateOutfit } = require('./outfitGenerator');
 const { getWeatherByCity, getWeatherBasedRecommendations } = require('./weatherService');
+const { getTodaysEvents } = require('./calendarService');
 const User = require('../models/User');
 
 /**
@@ -40,10 +41,22 @@ const generateTodaysOutfit = async (userId, options = {}) => {
       weather = await getWeatherByCity(city);
     }
 
+    // Get calendar events if not provided and calendar is connected
+    let finalCalendarEvents = calendarEvents;
+    if (!finalCalendarEvents || finalCalendarEvents.length === 0) {
+      try {
+        const calendarEvents = await getTodaysEvents(userId);
+        finalCalendarEvents = calendarEvents;
+      } catch (error) {
+        // Calendar not connected or error - use provided events or empty
+        console.log('Calendar not available:', error.message);
+      }
+    }
+
     // Determine occasion from calendar events
     let occasion = 'Daily';
-    if (calendarEvents && calendarEvents.length > 0) {
-      const eventTypes = calendarEvents.map(e => e.type?.toLowerCase() || '');
+    if (finalCalendarEvents && finalCalendarEvents.length > 0) {
+      const eventTypes = finalCalendarEvents.map(e => e.type?.toLowerCase() || '');
       if (eventTypes.includes('office') || eventTypes.includes('meeting')) {
         occasion = 'Office';
       } else if (eventTypes.includes('party') || eventTypes.includes('celebration')) {
@@ -89,7 +102,7 @@ const generateTodaysOutfit = async (userId, options = {}) => {
         condition: weather.condition,
         humidity: weather.humidity,
       } : null,
-      calendarEvents: calendarEvents || [],
+      calendarEvents: finalCalendarEvents || [],
       userMood: userMood || 'casual',
       isWorn: false,
     });

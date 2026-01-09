@@ -51,6 +51,8 @@ app.use('/api/gaps', require('./routes/gapDetectionRoutes'));
 app.use('/api/style-history', require('./routes/styleHistoryRoutes'));
 app.use('/api/occasions', require('./routes/occasionRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
+app.use('/api/calendar', require('./routes/calendarRoutes'));
+app.use('/api/config', require('./routes/configRoutes'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

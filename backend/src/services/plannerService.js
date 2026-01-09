@@ -3,6 +3,7 @@ const Outfit = require('../models/Outfit');
 const DailyOutfit = require('../models/DailyOutfit');
 const { generateOutfit } = require('./outfitGenerator');
 const { getWeatherByCity } = require('./weatherService');
+const { getWeekEvents } = require('./calendarService');
 const User = require('../models/User');
 
 /**
@@ -48,6 +49,14 @@ const generateWeeklyPlan = async (userId, weekStartDate, options = {}) => {
     const outfits = [];
     const currentDate = new Date(startDate);
 
+    // Get week's calendar events if calendar is connected
+    let weekEvents = [];
+    try {
+      weekEvents = await getWeekEvents(userId, startDate);
+    } catch (error) {
+      console.log('Calendar not available for planner:', error.message);
+    }
+
     while (currentDate <= endDate) {
       // Get weather for the day (simplified - using current weather)
       let weather = null;
@@ -55,11 +64,35 @@ const generateWeeklyPlan = async (userId, weekStartDate, options = {}) => {
         weather = await getWeatherByCity(city);
       }
 
-      // Determine occasion (simplified - can be enhanced with calendar integration)
+      // Determine occasion from calendar events for this day
       let occasion = 'Daily';
-      const dayOfWeek = currentDate.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        occasion = 'Party'; // Weekend
+      const dayStart = new Date(currentDate);
+      dayStart.setHours(0, 0, 0, 0);
+      const dayEnd = new Date(currentDate);
+      dayEnd.setHours(23, 59, 59, 999);
+
+      // Find events for this day
+      const dayEvents = weekEvents.filter(event => {
+        const eventDate = new Date(event.start);
+        return eventDate >= dayStart && eventDate <= dayEnd;
+      });
+
+      if (dayEvents.length > 0) {
+        // Use the first event's type to determine occasion
+        const eventType = dayEvents[0].type;
+        if (eventType === 'office') {
+          occasion = 'Office';
+        } else if (eventType === 'party') {
+          occasion = 'Party';
+        } else if (eventType === 'travel') {
+          occasion = 'Travel';
+        }
+      } else {
+        // Fallback to day of week
+        const dayOfWeek = currentDate.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+          occasion = 'Party'; // Weekend
+        }
       }
 
       // Generate outfit

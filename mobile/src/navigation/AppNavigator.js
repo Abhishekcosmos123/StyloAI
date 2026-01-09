@@ -36,6 +36,9 @@ import PrivacySettingsScreen from '../screens/settings/PrivacySettingsScreen';
 // Payment Screens
 import PaymentScreen from '../screens/payment/PaymentScreen';
 
+// Calendar Screens
+import CalendarSettingsScreen from '../screens/calendar/CalendarSettingsScreen';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -175,6 +178,11 @@ const AppNavigator = () => {
             name="Payment"
             component={PaymentScreen}
             options={{headerShown: true, title: 'Upgrade to Premium'}}
+          />
+          <Stack.Screen
+            name="CalendarSettings"
+            component={CalendarSettingsScreen}
+            options={{headerShown: true, title: 'Calendar Integration'}}
           />
         </>
       )}

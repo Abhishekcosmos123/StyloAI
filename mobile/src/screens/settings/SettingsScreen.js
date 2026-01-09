@@ -108,20 +108,30 @@ const SettingsScreen = ({navigation}) => {
         },
       ],
     },
-    {
-      title: 'App Settings',
-      items: [
-        {
-          icon: 'stats-chart',
-          label: 'Analytics',
-          rightComponent: (
-            <Switch
-              value={analyticsEnabled}
-              onValueChange={setAnalyticsEnabled}
-              trackColor={{false: colors.lightGray, true: colors.primary}}
-            />
-          ),
-        },
+      {
+        title: 'Integrations',
+        items: [
+          {
+            icon: 'calendar',
+            label: 'Google Calendar',
+            onPress: () => navigation.navigate('CalendarSettings'),
+          },
+        ],
+      },
+      {
+        title: 'App Settings',
+        items: [
+          {
+            icon: 'stats-chart',
+            label: 'Analytics',
+            rightComponent: (
+              <Switch
+                value={analyticsEnabled}
+                onValueChange={setAnalyticsEnabled}
+                trackColor={{false: colors.lightGray, true: colors.primary}}
+              />
+            ),
+          },
         {
           icon: 'refresh',
           label: 'Clear Cache',

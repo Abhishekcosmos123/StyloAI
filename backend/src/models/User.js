@@ -55,6 +55,15 @@ const userSchema = new mongoose.Schema(
     premiumExpiresAt: {
       type: Date,
     },
+    googleCalendar: {
+      accessToken: String,
+      refreshToken: String,
+      tokenExpiry: Date,
+      isConnected: {
+        type: Boolean,
+        default: false,
+      },
+    },
   },
   {
     timestamps: true,
